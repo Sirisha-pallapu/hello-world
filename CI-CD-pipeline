@@ -1,0 +1,24 @@
+node{
+    stage('scm checkout'){
+       git credentialsId: 'git-cred', url: 'https://github.com/Sirisha-pallapu/hello-world.git' 
+        
+    }
+    stage('Mvn package'){
+        sh label: '', script: 'mvn clean package'
+    
+    }
+    stage('Build docker image'){
+        sh 'docker build -t sirishapallapu/my-app:1.0.0 .'
+    }
+     stage('push docker image'){
+        withCredentials([string(credentialsId: 'dockerhublogin', variable: 'dockerhubpwd')]) {
+         sh "docker login -u sirishapallapu -p ${dockerhubpwd}"
+         
+      } 
+     sh 'docker push sirishapallapu/my-app:1.0.0'
+    }
+    stage ('Run docker container'){
+        sh 'docker run -p 8090:8090 -d --name my-application sirishapallapu/my-app:1.0.0'
+    }
+}
+
