@@ -3,4 +3,4 @@ From tomcat:8-jre8
 
 # Maintainer 
 MAINTAINER "sirisha.pallapu@mindtree.com" 
-COPY target/*.war /usr/local/tomcat/webapps/myweb.war
+COPY ./webapp.war /usr/local/tomcat/webapps
